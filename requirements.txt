@@ -1,0 +1,19 @@
+pip install django==2.0 whitenoise
+pip install django-user-agents
+pip install pymysql
+pip install mysqlclient
+pip install pygeoip
+pip install wlwt
+pip install Pillow
+pip install django-import-export
+
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'jorgedcplp$jorgedb',
+        'USER': 'jorgedcplp',
+        'PASSWORD': '2147cxh3%$',
+        'HOST': 'jorgedcplp.mysql.pythonanywhere-services.com',
+
+    }
+}

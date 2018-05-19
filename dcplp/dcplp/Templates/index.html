@@ -1,0 +1,182 @@
+
+{% extends 'base.html' %}
+{% load static %}
+{% load extras %}
+{% block tittle %}Inicio DCPLP{% endblock %}
+
+
+    {% block head %}
+  <link rel="stylesheet" href="{% static 'css/index.css' %}">
+    <script src = "https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.bundle.min.js"></script>
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.13/css/all.css" integrity="sha384-DNOHZ68U8hZfKXOrtjWvjxusGo9WQnrNx2sqG0tfsghAvtVlRW3tvkXWZh58N9jp" crossorigin="anonymous">
+    {% endblock %}
+
+
+
+  {% block content %}
+  <div id="particles-js"></div>
+
+
+
+<div class="container-fluid">
+  <div id="object" class="saludo pullUp">
+  <h5>  Qué tal {{usuario|title}}?</h5>
+  </div>
+
+
+
+<div class='row primero'>
+  <div class="col-6">
+
+
+<a href="{% url 'exportar_csv' %}">Csv</a> | <a href="{% url 'exportar_xls' %}">Excel</a>
+
+    {% if tabla %}
+  <div class="table-responsive">
+  <table  class="table table-sm table-bordered table-hover table-dark">
+      <thead>
+          <tr>
+              <th>Empresa-Razón Social</th>
+              <th>Lineas</th>
+              <th>Fecha</th>
+              <th>Rent por línea</th>
+              <th>Total</th>
+              <th>Upfront fija</th>
+              <th>Cliente O+</th>
+              <th>Cliente Valor</th>
+
+
+
+          </tr>
+      </thead>
+       <tbody>
+
+
+      {% for item in tabla %}
+       <tr>
+
+           <!-- <td>{{item.razon_social}}</td> -->
+           <td>{{item.razon_social}}</td>
+           <td>{{item.total_lineas}}</td>
+           <td>{{item.fecha|date:"d/m/Y"}}</td>
+           <td>{{item.rentabilidad_porLinea}}</td>
+           <td>{{item.totalUpfront}}</td>
+           <td>{{item.comision_fija}}</td>
+           <td>{{item.escliente_oficinaPlus}}</td>
+           <td>{{item.esclientevalor_volumen}}</td>
+
+
+          {% endfor %}
+          </tr>
+
+
+      </tbody>
+  </table>
+
+  <!-- PAGINATORRRRR -->
+
+  {% if tabla.has_other_pages %}
+  <nav aria-label="Page navigation example">
+    <ul class="pagination">
+        <!-- BOTÓN ANTERIOR -->
+      {% if tabla.has_previous %}
+        <li class="page-item">
+          <a class = "page-link" href="?page={{ tabla.previous_page_number }}" aria-label="Previous">Anterior</a>
+        </li>
+      {% else %}
+      <li class="page-item disabled">
+        <a class = "page-link" href="#" aria-label="Previous">Anterior</a>
+      </li>
+      {% endif %}
+
+
+      {% for i in tabla.paginator.page_range %} <!-- por cada una de las paginas... -->
+          <!-- SI ESTOY EN ESE NÚMERO DE PÁGINA... -->
+        {% if tabla.number == i %}
+          <li class="page-item active">
+            <span class="page-link">{{ i }}</span>
+          </li>
+        {% else %}
+          <li class="page-item"><a class="page-link" href="?page={{ i }}">{{ i }}</a></li>
+        {% endif %}
+      {% endfor %}
+      {% if tabla.has_next %}
+        <li class="page-item"><a class="page-link" href="?page={{ tabla.next_page_number }}">Siguiente</a></li>
+      {% else %}
+      <li class="page-item disabled">
+        <a class = "page-link" href="#" aria-label="Previous">Siguiente</a>
+      </li>
+      {% endif %}
+    </ul>
+  </nav>
+  {% endif %}
+
+
+</div><!--  fin table resonsive div -->
+
+{% else %} <!--  si no hay nada que mostrar en la tabla -->
+<h5>Sin datos</h5>
+<div class='bloque_sin_datos stretchRight'>
+<p> Estimado {{usuario|title}}, todavía no tienes ninguna operación configurada y guardada.
+  Las operaciones que configures para obtener la rentabilidad y desees guardar para el futuro,
+  aparecerán aquí como un listado descargable para que puedas retomar cualquier operación o hacer un seguimiento
+  de tus datos. </p>
+  <p> Para empezar, ve al apartado de Configurador. </p>
+</div>
+{% endif %}
+
+</div>  <!--  FIN PRIMERA COLUMNA -->
+<div class="col-6">
+      <div class="table-responsive">
+        <div style="width:85%">
+            <canvas id="canvas"></canvas>
+          </div>
+      </div>
+</div>
+
+</div><!--  fin row -->
+
+</div> <!-- FIN CONTAINER -->
+  {% endblock %}
+
+
+
+{% block javascript %}
+<script>
+particlesJS.load('particles-js', '../../../static/json/particles.json', function() {
+console.log('callback - particles.js config loaded');
+});
+
+
+
+</script>
+
+<!--  CHARTS -->
+<script>
+
+var ctx = document.getElementById("canvas").getContext('2d');
+
+var myChart = new Chart(ctx, {
+  type: 'bar',
+  data: {
+      labels: {{fields|safe}},
+      datasets: [{
+          label: '#Líneas',
+          data: {{data|safe}},
+
+          borderWidth: 1
+      }]
+  },
+  options: {
+      scales: {
+          yAxes: [{
+              ticks: {
+                  beginAtZero:true
+              }
+          }]
+      }
+  }
+});
+	</script>
+  {% endblock %}

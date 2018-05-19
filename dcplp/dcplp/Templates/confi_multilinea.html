@@ -1,0 +1,531 @@
+{% extends "base.html" %}
+{% load static %}
+{% block tittle %}Configurador Multilinea{% endblock %}
+
+ {% block head %}
+
+
+<link rel="stylesheet" href="{% static 'css/confi_multi_css.css' %}">
+
+
+
+
+
+
+ {% endblock %}
+
+{% block content %}
+
+<div class="row espaciado">
+<button type="button" id="dale" class="btn btn-outline-info btn-sm" >Añadir fila</button>
+<button type="button" id="elimina" class="btn btn-outline-danger btn-sm">Eliminar Fila</button>
+<button type="button" id="boton_buscar" class="btn btn-success btn-sm">Generar</button>
+<button type="button" id="boton_instrucciones" class="btn btn-outline-secondary btn-sm">Instrucciones</button>
+<button type="button" id="boton_otros" class="btn btn-outline-secondary btn-sm">Añadir ingresos/gastos</button>
+<button type="button" id="boton_guardar" class="btn btn-outline-success btn-sm">Guardar Operación</button>
+
+<select name="conecta" id="id_conectas">
+      {% for conecta in  conectas %}
+          <option value="{{conecta.conecta}}">{{conecta.conecta}}</option>
+    {% endfor %}
+    <option value="Sin Conecta Pymes" selected>Sin Conecta Pymes</option>
+</select>
+
+</div>
+
+
+
+
+
+
+
+<div id="principal">
+  <div id="grupo" class="row slideDown">
+    <div class="col-sm-12">
+      <form action="" method="post" class="form-inline">
+          {% csrf_token %}
+          <h5>1</h5>
+          <b>Líneas: </b><input type="text" name="unidades" value=1 id='id_n_altas'>
+
+          <label><b>Tarifa: </b></label>
+              <select name="tarifas" id="id_tarifa" >
+                    <option value="optima">Óptima</option>
+                    <option value="optima_rpv" selected>Óptima RPV</option>
+                    <option value="solper">SolPer RPV</option>
+                    <option value="4gnegocio">4G en tu Negocio</option>
+                    <option value="4goficina">4G en tu Oficina</option>
+                    <option value="iew10">IEW 10GB</option>
+                    <option value="iew8">IEW 8GB</option>
+                    <option value="iew3">IEW 3GB</option>
+            </select>
+
+            <label><b>origen: </b></label>
+                <select name="origen" id="id_origen">
+                      <option value="Postpago">Postpago</option>
+                      <option value="Captación">Captación</option>
+                      <option value="Prepago">Prepago</option>
+                      <option value="Migración">Migración</option>
+                </select>
+
+            <label><b>Datos: </b></label>
+                <select name="datos" id="id_voz_datos">
+                      <option value="1gb">150+1GB</option>
+                      <option value="2gb">2GB</option>
+                      <option value="5gb">5GB</option>
+                      <option value="12gb">12GB</option>
+                      <option value="30gb">30GB</option>
+                      <option value="sin_datos" selected>Sin paquete</option>
+              </select>
+
+              <label><b>cv: </b></label>
+                  <select name="cv" id="id_cv">
+                      <option value="sin_cv">Sin CV</option>
+                        <option value="agente">Agente</option>
+                        <option value="cabecera">Cabecera</option>
+
+                </select>
+
+                <label><b>mfo: </b></label>
+                    <select name="mfo" id="id_mfo">
+                          <option value="sin_mfo">Sin MFO</option>
+                          <option value="mfo_porta">MFO portado</option>
+                          <option value="mfo_capta">MFO Nuevo</option>
+                      </select>
+
+                <label><b>Vap: </b></label>
+                    <select name="mfo" id="id_vap">
+                          <option value="no_vap">No</option>
+                          <option value="si_vap">SI</option>
+                    </select>
+
+          <label for="id_terminales"><b>Terminal: </b></label>
+
+              <select name="terminales" id="id_terminales">
+                  {% for equipo in  terminales %}
+                    <option value="{{equipo.modelo}}">{{equipo.modelo}}</option>
+                  {% endfor %}
+            </select>
+                                <!-- para iew -->
+
+                <select name="terminales_iew" id="id_terminales_iew" style="display:none;">
+                    {% for equipo in  terminales_iew %}
+                      <option value="{{equipo.modelo}}">{{equipo.modelo}}</option>
+                    {% endfor %}
+              </select>
+
+
+            <!-- style="display:none;" -->
+
+          </form>
+
+      </div>
+  </div>
+</div><!--  fin div principal rows configurador -->
+  </hr>
+
+
+
+
+<div class='container-fluid' id='contenedor_todas_tarjetas'>
+<div class="row">
+  <!-- TARJETA RESUMEN -->
+    <div class="col-sm" id="tarjeta_resumen" style="display:none;">
+      <div id="card_resumen" style="width: 18rem;">
+
+        <div class='row contenido_com pullUp' id="contenido_resumen">  <!-- row contenido -->
+            <div clas="col-sm"><!-- columna comisiones -->
+              <p id="comisiones_resumen"></p>
+            </div>
+
+        </div>
+
+          <div class='row fila_avisos'> <!-- nueva fila para los avisos -->
+              <h5 id="avisos_resumen"><p></p></h5>
+              <p id="pavisos_resumen"></p>
+          </div>
+            </div><!-- fin micard! -->
+    </div> <!-- fin columna card! -->
+
+<!-- TARJETA Nº 0!!! -->
+  <div class="col-sm" id="tarjeta0" style="display:none;">
+    <div class="micard hatch" style="width: 18rem;">
+
+      <div class="row"> <!-- row encabezado -->
+          <h5 id="encabezadoh0"></h5>
+      </div>
+
+
+      <div class='row contenido_com'>  <!-- row contenido -->
+          <div clas="col-sm"><!-- columna comisiones -->
+            <p id="comisiones0"></p>
+          </div>
+
+          <div clas="col-sm" id="imagen_div0"> <!-- columna imagen -->
+          </div><!-- fin col secundario! -->
+          <div class='row boton_imagen_tip'> <!-- nueva fila para el boton -->
+                  <button type="button" id="btn_reco0" class="btn btn-outline-warning btn-sm btnpequejorge">Alternativas?</button>
+                  <button type="button" id="btn_info0" class="btn btn-outline-danger btn-sm btnpequejorge2">Info equipo</button>
+          </div>
+      </div>
+
+
+
+
+      <div class='row fila_avisos'> <!-- nueva fila para los avisos -->
+            <h5 id="avisos0"><p></p></h5>
+            <p id="pavisos0"></p>
+        </div>
+          </div><!-- fin micard! -->
+  </div> <!-- fin columna card! -->
+
+
+
+<!-- TARJETA Nº 1!!! -->
+<div class="col-sm" id="tarjeta1" style="display:none;">
+  <div class="micard hatch" style="width: 18rem;">
+
+    <div class="row"> <!-- row encabezado -->
+        <h5 id="encabezadoh1"></h5>
+    </div>
+
+    <div class='row contenido_com'>  <!-- row contenido -->
+        <div clas="col-sm"><!-- columna comisiones -->
+          <p id="comisiones1"></p>
+        </div>
+
+        <div clas="col-sm" id="imagen_div1"> <!-- columna imagen -->
+        </div><!-- fin col secundario! -->
+        <div class='row boton_imagen_tip'> <!-- nueva fila para el boton -->
+                <button type="button" id="btn_reco1" class="btn btn-outline-warning btn-sm btnpequejorge">Alternativas?</button>
+                <button type="button" id="btn_info1" class="btn btn-outline-danger btn-sm btnpequejorge2">Info equipo</button>
+        </div>
+    </div>
+
+
+
+
+    <div class='row fila_avisos'> <!-- nueva fila para los avisos -->
+          <h5 id="avisos1"><p></p></h5>
+          <p id="pavisos1"></p>
+      </div>
+        </div><!-- fin micard! -->
+</div> <!-- fin columna card! -->
+
+<!-- TARJETA Nº 2!!! -->
+<div class="col-sm" id="tarjeta2" style="display:none;">
+  <div class="micard hatch" style="width: 18rem;">
+
+    <div class="row"> <!-- row encabezado -->
+        <h5 id="encabezadoh2"></h5>
+    </div>
+
+
+    <div class='row contenido_com'>  <!-- row contenido -->
+        <div clas="col-sm"><!-- columna comisiones -->
+          <p id="comisiones2"></p>
+        </div>
+
+        <div clas="col-sm" id="imagen_div2"> <!-- columna imagen -->
+        </div><!-- fin col secundario! -->
+        <div class='row boton_imagen_tip'> <!-- nueva fila para el boton -->
+                <button type="button" id="btn_reco2" class="btn btn-outline-warning btn-sm btnpequejorge">Alternativas?</button>
+                <button type="button" id="btn_info2" class="btn btn-outline-danger btn-sm btnpequejorge2">Info equipo</button>
+        </div>
+    </div>
+
+
+
+
+    <div class='row fila_avisos'> <!-- nueva fila para los avisos -->
+          <h5 id="avisos2"><p></p></h5>
+          <p id="pavisos2"></p>
+      </div>
+        </div><!-- fin micard! -->
+</div> <!-- fin columna card! -->
+
+  <!-- TARJETA Nº 3!!! -->
+  <div class="col-sm" id="tarjeta3" style="display:none;">
+    <div class="micard hatch" style="width: 18rem;">
+
+      <div class="row"> <!-- row encabezado -->
+          <h5 id="encabezadoh3"></h5>
+      </div>
+
+
+      <div class='row contenido_com'>  <!-- row contenido -->
+          <div clas="col-sm"><!-- columna comisiones -->
+            <p id="comisiones3"></p>
+          </div>
+
+          <div clas="col-sm" id="imagen_div3"> <!-- columna imagen -->
+          </div><!-- fin col secundario! -->
+
+          <div class='row boton_imagen_tip'> <!-- nueva fila para el boton -->
+                  <button type="button" id="btn_reco3" class="btn btn-outline-warning btn-sm btnpequejorge">Alternativas?</button>
+                  <button type="button" id="btn_info3" class="btn btn-outline-danger btn-sm btnpequejorge2">Info equipo</button>
+          </div>
+      </div>
+
+
+
+
+      <div class='row fila_avisos'> <!-- nueva fila para los avisos -->
+            <h5 id="avisos3"><p></p></h5>
+            <p id="pavisos3"></p>
+        </div>
+          </div><!-- fin micard! -->
+  </div> <!-- fin columna card! -->
+
+    <!-- TARJETA Nº 4!!! -->
+    <div class="col-sm" id="tarjeta4" style="display:none;">
+      <div class="micard hatch" style="width: 18rem;">
+
+        <div class="row"> <!-- row encabezado -->
+            <h5 id="encabezadoh4"></h5>
+        </div>
+
+
+        <div class='row contenido_com'>  <!-- row contenido -->
+            <div clas="col-sm"><!-- columna comisiones -->
+              <p id="comisiones4"></p>
+            </div>
+
+            <div clas="col-sm" id="imagen_div4"> <!-- columna imagen -->
+            </div><!-- fin col secundario! -->
+
+            <div class='row boton_imagen_tip'> <!-- nueva fila para el boton -->
+                    <button type="button" id="btn_reco4" class="btn btn-outline-warning btn-sm btnpequejorge">Alternativas?</button>
+                    <button type="button" id="btn_info4" class="btn btn-outline-danger btn-sm btnpequejorge2">Info equipo</button>
+            </div>
+
+        </div>
+
+
+
+        <div class='row fila_avisos'> <!-- nueva fila para los avisos -->
+              <h5 id="avisos4"><p></p></h5>
+              <p id="pavisos4"></p>
+          </div>
+            </div><!-- fin micard! -->
+    </div> <!-- fin columna card! -->
+
+      <!-- TARJETA Nº 5!!! -->
+      <div class="col-sm" id="tarjeta5" style="display:none;">
+        <div class="micard hatch" style="width: 18rem;">
+
+          <div class="row"> <!-- row encabezado -->
+              <h5 id="encabezadoh5"></h5>
+          </div>
+
+
+          <div class='row contenido_com'>  <!-- row contenido -->
+              <div clas="col-sm"><!-- columna comisiones -->
+                <p id="comisiones5"></p>
+              </div>
+
+              <div clas="col-sm" id="imagen_div5"> <!-- columna imagen -->
+              </div><!-- fin col secundario! -->
+
+              <div class='row boton_imagen_tip'> <!-- nueva fila para el boton -->
+                      <button type="button" id="btn_reco5" class="btn btn-outline-warning btn-sm btnpequejorge">Alternativas?</button>
+                      <button type="button" id="btn_info5" class="btn btn-outline-danger btn-sm btnpequejorge2">Info equipo</button>
+              </div>
+          </div>
+
+
+
+
+          <div class='row fila_avisos'> <!-- nueva fila para los avisos -->
+                <h5 id="avisos5"><p></p></h5>
+                <p id="pavisos5"></p>
+            </div>
+              </div><!-- fin micard! -->
+      </div> <!-- fin columna card! -->
+
+        <!-- TARJETA Nº 6!!! -->
+        <div class="col-sm" id="tarjeta6" style="display:none;">
+          <div class="micard hatch" style="width: 18rem;">
+
+            <div class="row"> <!-- row encabezado -->
+                <h5 id="encabezadoh6"></h5>
+            </div>
+
+
+            <div class='row contenido_com'>  <!-- row contenido -->
+                <div clas="col-sm"><!-- columna comisiones -->
+                  <p id="comisiones6"></p>
+                </div>
+
+                <div clas="col-sm" id="imagen_div6"> <!-- columna imagen -->
+                </div><!-- fin col secundario! -->
+                <div class='row boton_imagen_tip'> <!-- nueva fila para el boton -->
+                        <button type="button" id="btn_reco6" class="btn btn-outline-warning btn-sm btnpequejorge">Alternativas?</button>
+                        <button type="button" id="btn_info6" class="btn btn-outline-danger btn-sm btnpequejorge2">Info equipo</button>
+                </div>
+            </div>
+
+
+
+
+            <div class='row fila_avisos'> <!-- nueva fila para los avisos -->
+                  <h5 id="avisos6"><p></p></h5>
+                  <p id="pavisos6"></p>
+              </div>
+                </div><!-- fin micard! -->
+        </div> <!-- fin columna card! -->
+
+
+          <!-- TARJETA Nº 7!!! -->
+          <div class="col-sm" id="tarjeta7" style="display:none;">
+            <div class="micard hatch" style="width: 18rem;">
+
+              <div class="row"> <!-- row encabezado -->
+                  <h5 id="encabezadoh7"></h5>
+              </div>
+
+              <div class='row contenido_com'>  <!-- row contenido -->
+                  <div clas="col-sm"><!-- columna comisiones -->
+                    <p id="comisiones7"></p>
+                  </div>
+
+                  <div clas="col-sm" id="imagen_div7"> <!-- columna imagen -->
+                  </div><!-- fin col secundario! -->
+
+                  <div class='row boton_imagen_tip'> <!-- nueva fila para el boton -->
+                          <button type="button" id="btn_reco7" class="btn btn-outline-warning btn-sm btnpequejorge">Alternativas?</button>
+                          <button type="button" id="btn_info7" class="btn btn-outline-danger btn-sm btnpequejorge2">Info equipo</button>
+                  </div>
+              </div>
+
+
+
+
+              <div class='row fila_avisos'> <!-- nueva fila para los avisos -->
+                    <h5 id="avisos7"><p></p></h5>
+                    <p id="pavisos7"></p>
+                </div>
+                  </div><!-- fin micard! -->
+          </div> <!-- fin columna card! -->
+
+
+            <!-- TARJETA Nº 8!!! -->
+            <div class="col-sm" id="tarjeta8" style="display:none;">
+              <div class="micard hatch" style="width: 18rem;">
+
+                <div class="row"> <!-- row encabezado -->
+                    <h5 id="encabezadoh8"></h5>
+                </div>
+
+                <div class='row contenido_com'>  <!-- row contenido -->
+                    <div clas="col-sm"><!-- columna comisiones -->
+                      <p id="comisiones8"></p>
+                    </div>
+
+                    <div clas="col-sm" id="imagen_div8"> <!-- columna imagen -->
+                    </div><!-- fin col secundario! -->
+                    <div class='row boton_imagen_tip'> <!-- nueva fila para el boton -->
+                            <button type="button" id="btn_reco8" class="btn btn-outline-warning btn-sm btnpequejorge">Alternativas?</button>
+                            <button type="button" id="btn_info8" class="btn btn-outline-danger btn-sm btnpequejorge2">Info equipo</button>
+                    </div>
+                </div>
+
+
+
+
+                <div class='row fila_avisos'> <!-- nueva fila para los avisos -->
+                      <h5 id="avisos8"><p></p></h5>
+                      <p id="pavisos8"></p>
+                  </div>
+                    </div><!-- fin micard! -->
+            </div> <!-- fin columna card! -->
+
+
+              <!-- TARJETA Nº 9!!! -->
+              <div class="col-sm" id="tarjeta9" style="display:none;">
+                <div class="micard hatch" style="width: 18rem;">
+
+                  <div class="row"> <!-- row encabezado -->
+                      <h5 id="encabezadoh9"></h5>
+                  </div>
+
+
+                  <div class='row contenido_com'>  <!-- row contenido -->
+                      <div clas="col-sm"><!-- columna comisiones -->
+                        <p id="comisiones9"></p>
+                      </div>
+
+                      <div clas="col-sm" id="imagen_div9"> <!-- columna imagen -->
+                      </div><!-- fin col secundario! -->
+                      <div class='row boton_imagen_tip'> <!-- nueva fila para el boton -->
+                              <button type="button" id="btn_reco9" class="btn btn-outline-warning btn-sm btnpequejorge">Alternativas?</button>
+                              <button type="button" id="btn_info9" class="btn btn-outline-danger btn-sm btnpequejorge2">Info equipo</button>
+                      </div>
+                  </div>
+
+
+
+
+                  <div class='row fila_avisos'> <!-- nueva fila para los avisos -->
+                        <h5 id="avisos9"><p></p></h5>
+                        <p id="pavisos9"></p>
+                    </div>
+                      </div><!-- fin micard! -->
+              </div> <!-- fin columna card! -->
+                </div>
+
+</div><!--  fin row -->
+</div> <!-- fin div id='contenedor_todas_tarjetas'> -->
+
+
+<!--  POP UP -->
+<div id="dialog0" title="Te recomendamos:">
+  <p></p>
+</div>
+<div id="dialog1" title="Te recomendamos:">
+  <p></p>
+</div>
+<div id="dialog2" title="Te recomendamos:">
+  <p></p>
+</div>
+<div id="dialog3" title="Te recomendamos:">
+  <p></p>
+</div>
+<div id="dialog4" title="Te recomendamos:">
+  <p></p>
+</div>
+<div id="dialog5" title="Te recomendamos:">
+  <p></p>
+</div>
+<div id="dialog6" title="Te recomendamos:">
+  <p></p>
+</div>
+<div id="dialog7" title="Te recomendamos:">
+  <p></p>
+</div>
+<div id="dialog8" title="Te recomendamos:">
+  <p></p>
+</div>
+<div id="dialog9" title="Te recomendamos:">
+  <p></p>
+</div>
+
+
+{% endblock %}
+
+
+{% block javascript %}
+
+<script src="{% static 'js/configurador.js' %}"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/7.19.2/sweetalert2.min.css" />
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2"></script>
+
+
+
+<script>
+$(function () {
+  $('[data-toggle="tooltip"]').tooltip()
+})
+    </script>
+
+
+{% endblock %}

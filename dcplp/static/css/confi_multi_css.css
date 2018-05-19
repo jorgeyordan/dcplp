@@ -1,0 +1,115 @@
+.row.espaciado {
+  padding-bottom: 2px;
+  margin:10px;
+}
+
+/* .row.espaciado1 {
+  padding-bottom: 20px;
+  margin:8px;
+  font-size: 8px;
+} */
+
+#principal{
+  font-size: 11px;
+  margin-left:10px;
+  text-align: center;
+}
+
+input[name="unidades"] {
+width: 20px;
+margin-right: 10px;
+text-align: center;
+}
+select{
+margin-right: 10px;
+text-align: center;
+}
+
+button{
+  margin-right: 5px;
+}
+div[id*="grupo"]{
+  border: 0.5px solid #999;
+	background-color: #85b1f7;
+  margin-bottom: 5px;
+}
+
+div[id*="dialog"]{
+font-size: 10px;
+}
+
+form h5{
+  border: 0.5px solid #fff;
+  padding: 3px;
+  border-radius: 50%;
+  width: 30px;
+  margin-right: 20px;
+}
+.micard{
+
+  border-style: solid;
+  padding-left: 25px;
+  padding-top: 10px;
+  border-width:thin;
+  border-color: grey;
+  margin-top:15px;
+  border-radius: 20px;
+  line-height: 6px;
+  margin-bottom: 15px;
+  font-size: 12px;
+}
+
+.micard h5{
+font-size:14px;
+padding-right:10px;
+}
+
+p[id*="avisos"]{
+  line-height:12px;
+
+
+}
+
+.boton_imagen_tip {
+  float:right;
+  margin-right:55px;
+
+}
+
+.btnpequejorge{
+  padding: 2px;
+  position:relative;
+  top:-50px;
+  left:155px;
+
+}
+
+.btnpequejorge2{
+  padding: 2px;
+  position:relative;
+  top:-15px;
+  left:66px;
+  width:85px;
+
+}
+
+.fila_avisos{
+  margin-top: -15px;
+  padding-right:8px;
+}
+#card_resumen{
+  font-size:12px;
+  text-align:center;
+}
+#contenido_resumen{
+  margin-left:auto;
+  margin-top:10px;
+}
+
+#id_conectas{
+  font-size:12px;
+  margin-left: 8px;
+}
+table td{
+  line-height: 10px;
+}

@@ -1,0 +1,104 @@
+body {
+   background-image: url("/static/images/background2.jpg");
+   background-repeat: no-repeat;
+   background-attachment: fixed;
+}
+
+#cuadrologin{
+  border-style: solid;
+  border-width: 1px;
+  padding:20px;
+  text-align: center;
+  background-color: rgba(255, 255, 255, 0.5);
+
+
+
+}
+
+
+
+  .div_centrado {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    margin-top: -40px;
+    margin-left: -90px;
+  }
+
+.div_centrado table{
+  border-collapse: separate;
+border-spacing: 50px 0;
+}
+.div_centrado tr{
+  border-collapse: separate;
+border-spacing: 50px 0;
+}
+
+.div_centrado input{
+text-align: center;
+
+}
+
+/* Pagination Styles */
+.pagination{
+  font-size: 11px;
+}
+.pagination-nav { margin: 30px 0 20px 0; }
+.pagination-nav ul {margin: 0; padding: 0;}
+.pagination-nav ul li {display: inline-block; margin: 3px; padding: 4px 8px; background: #FFF; color: black; }
+.pagination-nav ul li.active:hover {cursor: pointer; background: #367fa9; color: white; }
+.pagination-nav ul li.inactive {background: #CACACA;}
+.pagination-nav ul li.selected {background: #367fa9; color: white;}
+
+.table-responsive {
+  font-size: 10px;
+}
+table{
+  opacity: 0.8;
+  text-align:center;
+}
+
+
+/* la primera row, la quiero cno más espacio arriba */
+.primero{
+  margin-top:60px;
+}
+
+canvas {
+  display: block;
+  vertical-align: bottom;
+}
+
+#particles-js {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+	background: $background
+}
+
+
+.resultado_detalle{
+  background-color: white;
+  position:relative;
+  width:80%;
+  padding:10px;
+  font-size:12px;
+line-height:normal;
+}
+
+.encabezados_detalle{
+  color:yellow;
+  background-color:black;
+
+}
+
+.saludo{
+   margin-top:20px;
+}
+
+.bloque_sin_datos{
+  background-color:black;
+  opacity: 0.9;
+  color:white;
+  padding:5px;
+}

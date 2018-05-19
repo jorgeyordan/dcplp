@@ -1,0 +1,65 @@
+{% extends "base.html" %}
+{% load static %}
+{% block tittle %}Accede DCPLP{% endblock %}
+
+{% block head %}
+<script src = "https://d3js.org/d3.v4.min.js"></script>
+<script src = "https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
+<link rel="stylesheet" href="{% static 'css/index.css' %}">
+{% endblock %}
+
+{% block content %}
+<div id="particles-js"></div>
+{% if form.errors %}
+
+
+<div class="div_centrado stretchLeft">
+<p>Usuario o Contraseña no coinciden. Inténtalo de nuevo</p>
+</div>
+{% endif %}
+
+{% if next %}
+<div class="div_centrado">
+    {% if user.is_authenticated %}
+      <p>Your account doesn't have access to this page. To proceed,
+        please login with an account that has access.</p>
+    {% else %}
+      <p>Por favor, inicia sesión para entrar</p>
+    {% endif %}
+</div>
+{% endif %}
+
+<div class="div_centrado">
+    <div class="pullDown" id="cuadrologin">
+      <form method="post" action="{% url 'login' %}">
+      {% csrf_token %}
+      <table class="table">
+        <tbody>
+      <tr>
+          <td><b>{{ form.username.label_tag }}</b></td>
+          <td>{{ form.username }}</td>
+      </tr>
+      <tr>
+          <td><b>{{ form.password.label_tag }}</b></td>
+          <td>{{ form.password }}</td>
+      </tr>
+      </table>
+       </tbody>
+    <hr>
+      <input type="submit" value="Iniciar Sesión" class="btn btn-outline-primary"/>
+      <input type="hidden" name="next" value="{{ next }}" />
+      </form>
+    </div>
+</div>
+
+
+<script>
+
+
+particlesJS.load('particles-js', '../static/json/particles.json', function() {
+
+});
+</script>
+
+
+{% endblock %}

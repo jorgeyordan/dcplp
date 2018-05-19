@@ -1,0 +1,96 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block tittle %}Detalle Operación{% endblock %}
+
+{% block head %}
+  <link rel="stylesheet" href="{% static 'css/index.css' %}">
+  <script src = "https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
+{% endblock %}
+
+{% block content %}
+<div id="particles-js"></div>
+
+<div class='container-fluid'>
+
+  <!-- PRIMERA FILA. NOMBRE EMPRESA -->
+  <div class="row">
+<div class="col-12">
+<h2><font color="white">{{ object.razon_social }} | {{ object.cif_nif }}</font></h2>
+</div>
+</div>
+
+  <!-- SEGUNFA FILA (ENCABEZDDOS) -->
+
+  <div class="row">
+    <div class="col-3">
+        <p class="encabezados_detalle">RESUMEN OPERACIÓN</p>
+    </div> <!-- fin col 1 -->
+    <div class="col-3">
+      <p class="encabezados_detalle">aqui los encabezados para la primera parte</p>
+    </div> <!-- fin col 1 -->
+    <div class="col-6">
+    <p class="encabezados_detalle">PRIMAS INFRAESTRUCUTRAS</p>
+    </div> <!-- fin col 1 -->
+
+</div>   <!-- fin row 1 -->
+
+
+  <!-- TECERA FILA (TARJETAS) -->
+  <div class="row">
+    <div class="col-3">
+      <div class='resultado_detalle'>
+
+
+
+    <p><b>fecha Alta :</b> {{ object.fecha }}</p>
+    <p><b>Cliente O+ :</b> {{ object.escliente_oficinaPlus }}</p>
+    <p><b>ClienteValor :</b> {{ object.esclientevalor_volumen }}</p>
+    <p><b>Configuraciones :</b> {{ object.n_lineas_diferentes }}</p>
+    <p><b>Total Líneas :</b> {{ object.total_lineas }}</p>
+
+</div>
+</div>
+
+  <div class="col-3">
+    <div class='resultado_detalle'>
+        <p><b>Total Upfront :</b> {{ object.totalUpfront_por_linea }}</p>
+        <p><b>Rentabilidad por línea :</b> {{ object.rentabilidad_porLinea }}</p>
+        <p><b>Prima Multilínea:</b> {{ object.prima_opex_base }}</p>
+        <p><b>Acelerador Fijo :</b> {{ object.prima_opex_conecta }}</p>
+        <p><b>Acelerador IEW :</b> {{ object.prima_opex_iew }}</p>
+        <p><b>Volumen Móvil :</b> {{ object.prima_volumen_movil }}</p>
+        <p><b>Volumen FIjo :</b> {{ object.prima_volumen_fijo }}</p>
+
+
+</div>
+</div>
+
+<div class="col-6">
+  <div class='resultado_detalle'>
+
+<p><b>Volumen :</b> {{ object.prima_volumen_movil }}</p>
+<p><b>fecha_alta :</b> {{ object.fecha }}</p>
+<p><b>upfront :</b> {{ asociado.upfront }}</p>
+<p><b>p_volumen : </b>{{ asociado.p_volumen }}</p>
+<p><b>p_opexl :</b> {{ asociado.p_opexl }}</p>
+<p><b>fide :</b> {{ asociado.fide }}</p>
+<p><b>apoyos_extraordinarios :</b>{{ asociado.apoyos_extraordinarios }}</p>
+<p><b>email : </b>{{ asociado.email }}</p>
+<p><b>observaciones :</b> {{ asociado.observaciones }}</p>
+</div>
+</div>
+
+</div><!--   fin row -->
+</div><!--   fin container fluid -->
+
+
+
+<script>
+particlesJS.load('particles-js', '../../../static/json/particles.json', function() {
+console.log('callback - particles.js config loaded');
+});
+
+
+
+</script>
+{% endblock content %}
